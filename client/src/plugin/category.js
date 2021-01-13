@@ -1,4 +1,4 @@
-const url = 'http://'+window.location.hostname+':3000/api/category/'
+const url = 'http://'+window.location.hostname+':3300/api/category/'
 const { toQueryParameter } = require('./utils')
 
 export const Read = () => {

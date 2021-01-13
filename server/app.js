@@ -4,7 +4,7 @@ const express = require('express')
     , bodyParser = require('body-parser')
     , mongoose = require('mongoose')
     , utils = require('./src/utils')
-    , port = 3000
+    , port = 3300
     , dbAddress = "mongodb://127.0.0.1:27017/time-tracker"
 
 app.use(cors())
