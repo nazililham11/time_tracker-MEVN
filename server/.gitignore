@@ -2,6 +2,8 @@
 node_modules
 /dist
 
+# Compiled client directory
+/public
 
 # local env files
 .env.local

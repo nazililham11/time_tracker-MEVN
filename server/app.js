@@ -20,6 +20,7 @@ mongoose.connect(
 )
 
 // Routes
+app.use(express.static('./public'));
 const routes = require('./src/routes')
 app.use('/api', routes)
 
