@@ -1,74 +1,41 @@
 <template>
-    <div>
-        <div style="border: 1px solid black; margin: 1rem; padding: 1rem">
-            <h3 style="margin: 0">Create Projects</h3>
-            <i>{{ createForm.id ? `Editing ${createForm.id}` : "Create New Project" }}</i>
-            <hr>
-            <div>
-                <div>
-                    <label for="title">Title</label><br>
-                    <input id="title" type="text" v-model="createForm.title">
+    <div class="container-fluid">
+        
+        <div class="row">
+            <div class="col-6">
+                <project-form 
+                    v-on:update_projects="loadProject"
+                    v-on:reset_form="edited._id = undefined"
+                    :edited="edited"
+                    />
+            </div>
+            <div class="col-6">
+                <div class="row mb-2" v-for="(project, i) in projects" :key="i">
+                    <div class="col-12">
+                        <project-item :data="project" 
+                            v-on:edit="prepareEditProject(i)"
+                            v-on:delete="deleteProject(i)"/>
+                    </div>
                 </div>
-                <div>
-                    <label for="color">Color</label><br>
-                    <input id="color" type="text" v-model="createForm.color">
-                </div>
-                <div>
-                    <label for="description">Description</label><br>
-                    <textarea id="description" rows="4" v-model="createForm.description"></textarea>
-                </div>
-                <button v-on:click="submitForm">submit</button>
-                <button v-on:click="resetForm">reset</button>
             </div>
         </div>
-
-        <div style="border: 1px solid black; margin: 1rem; padding: 1rem">
-            <h3 style="margin: 0">All Projects</h3>
-            <hr>
-            <ol>
-                <li v-for="(project, i) in projects" :key="i" style="border: 1px solid black; margin: 1rem; padding: 1rem">
-                    <tr>
-                        <td>Title</td>
-                        <td>: {{project.title}}</td>
-                    </tr>
-                    <tr>
-                        <td>Color</td>
-                        <td>: {{project.color}}</td>
-                    </tr>
-                    <tr>
-                        <td>Date Created</td>
-                        <td>: {{toDate(project.dateCreated)}}</td>
-                    </tr>
-                    <tr>
-                        <td>Description</td>
-                        <td>: {{project.description}}</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <button v-on:click="prepareEditProject(i)">Edit</button>
-                            <button v-on:click="deleteProject(i)">Delete</button>
-                        </td>
-                    </tr>
-                </li>
-            </ol>
-        </div>
-
     </div>
 </template>
 
 <script>
+import ProjectForm from "@/components/ProjectForm.vue"
+
 import Project from "@/plugin/project.js"
 import Utils from "@/plugin/utils.js"
+import ProjectItem from '@/components/ProjectItem.vue'
 
 export default {
     name: "Project",
+    components: { ProjectForm, ProjectItem },
     data() {
         return {
-            createForm: {
-                id: undefined,
-                title: "",
-                color: "",
-                description: ""
+            edited: {
+                _id: undefined,
             },
             projects: [],
         }
@@ -85,27 +52,8 @@ export default {
                 Project.Remove(id).then(this.loadProject)
         },
         prepareEditProject(index) {
-            const { _id, title, color, description } = this.projects[index]
-            this.createForm.id = _id
-            this.createForm.title = title
-            this.createForm.color = color
-            this.createForm.description = description
+            this.edited = this.projects[index]
         },
-        resetForm() {
-            this.createForm.id = undefined
-            this.createForm.title = ""
-            this.createForm.color = ""
-            this.createForm.description = ""
-        },
-        submitForm() {
-            const { title, color, description } = this.createForm
-            if (this.createForm.id){
-                const id = this.createForm.id
-                Project.Update(id, { title, color, description }).then(this.loadProject).then(this.resetForm)
-            } else {
-                Project.Insert({ title, color, description }).then(this.loadProject).then(this.resetForm)
-            }
-        }
     },
     mounted() {
         this.loadProject()
