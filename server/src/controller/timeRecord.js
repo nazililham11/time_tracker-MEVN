@@ -53,7 +53,7 @@ const create = async (req, res) => {
 
 const find = async (req, res) => {
     try {
-        const records = await TimeRecord.find().populate(['project', 'category'])
+        const records = await TimeRecord.find().sort({ dateCreated: -1 }).populate(['project', 'category'])
         const compact = compactRecords(records)
         res.send(compact)
     } catch(e){

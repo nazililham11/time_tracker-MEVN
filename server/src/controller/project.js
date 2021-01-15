@@ -26,7 +26,7 @@ const create = async (req, res) => {
 
 const find = async (req, res) => {
     try {
-        const projects = await Project.find()
+        const projects = await Project.find().sort({ title: 1 })
         res.send(projects)
     } catch(e){
         res.status(500).json(e)

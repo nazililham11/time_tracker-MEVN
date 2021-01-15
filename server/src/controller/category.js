@@ -26,7 +26,7 @@ const create = async (req, res) => {
 
 const find = async (req, res) => {
     try {
-        const categories = await Category.find()
+        const categories = await Category.find().sort({ title: 1 })
         res.send(categories)
     } catch(e){
         res.status(500).json(e)
