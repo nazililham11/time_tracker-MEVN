@@ -68,7 +68,7 @@ export const toTimeNumber = (d) => {
     if (!d)
         return ''
     d = new Date(d)
-    return ''+d.getHours()+d.getMinutes()
+    return `${numberPad(d.getHours(), 2)}${numberPad(d.getMinutes(), 2)}`
 }
 
 export default {
