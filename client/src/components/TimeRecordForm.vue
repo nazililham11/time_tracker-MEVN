@@ -170,6 +170,7 @@ export default {
             this.form.date = toISODateString(new Date())
             this.form.timeStart = undefined
             this.form.timeFinish = undefined
+            this.form.description = undefined
             this.$emit('reset_form')
         },
         deleteRecord(){
