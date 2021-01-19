@@ -11,9 +11,9 @@
         </div>
 
         <div class="row my-3">
-            <div class="col">
+            <div class="col-12 mb-3" v-for="(record, i) in records" :key="i">
                 <time-record-item 
-                    :records="records" 
+                    :records="record" 
                     v-on:edit="editRecord"
                     v-on:delete="deleteRecord"
                     />
