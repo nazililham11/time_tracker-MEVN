@@ -68,6 +68,9 @@
                 <button class="btn btn-primary mr-3" v-on:click="submitForm">Submit</button>
                 <button class="btn btn-info mr-3" v-on:click="resetForm">Reset</button>
                 <button class="btn btn-danger mr-3" v-on:click="deleteRecord" v-show="form.id">Delete</button>
+                <button class="btn btn-danger mr-3" 
+                    v-show="form.id && edited && !edited.timeFinish"
+                    v-on:click="stopRecord">Stop</button>
             </div>
         </div>
         
@@ -178,6 +181,13 @@ export default {
         },
         updateRecord(){
             this.$emit('update_record')
+        },
+        stopRecord(){
+            const { _id, project, category, description, timeStart } = this.edited
+            if (_id){
+                const data = { project, category, description, timeStart, timeFinish: Date.now() }
+                TimeRecord.Update(_id, data).then(this.updateRecord).then(this.resetForm)
+            }
         }
     },
     mounted() {
